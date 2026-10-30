@@ -20,20 +20,25 @@ class AdminSeeder extends Seeder
         //
         $faker = Faker::create('id_ID');
 
-        $profile = Profile::create([
-            "alamat"    => $faker->address,
-            "umur"    => $faker->numberBetween(1,50),
-            "bio"      => 'administrator',
-        ]);
+        $profile = Profile::firstOrCreate(
+            ['bio' => 'administrator'],
+            [
+                'alamat' => $faker->address,
+                'umur'   => $faker->numberBetween(25, 45),
+            ]
+        );
 
-        User::create([
-            'name' => 'admin',
-            'email' => 'admin@example.com',
-            'email_verified_at' => now(),
-            'password' => Hash::make('12345678'),
-            'remember_token' => Str::random(10),
-            'role_id' => 2,
-            'profile_id' => $profile->id,
-        ]);
+        User::updateOrCreate(
+            ['email' => 'admin@example.com'],
+            [
+                'name'              => 'admin',
+                'email_verified_at' => now(),
+                'password'          => Hash::make('12345678'),
+                'remember_token'    => Str::random(10),
+                'role'              => 'admin',
+                'role_id'           => 2,
+                'profile_id'        => $profile->id,
+            ]
+        );
     }
 }

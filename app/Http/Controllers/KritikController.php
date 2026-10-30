@@ -3,64 +3,33 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kritik;
-use App\Http\Requests\StoreKritikRequest;
-use App\Http\Requests\UpdateKritikRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class KritikController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Store a newly created comment in storage.
      */
-    public function index()
+    public function store(Request $request)
     {
-        //
-    }
+        $validated = $request->validate([
+            'comment' => ['required', 'string', 'max:500'],
+            'film_id' => ['required', 'integer', 'exists:films,id'],
+        ], [
+            'comment.required' => 'Komentar tidak boleh kosong.',
+            'comment.max'      => 'Komentar maksimal 500 karakter.',
+            'film_id.required' => 'Film tidak ditemukan.',
+            'film_id.exists'   => 'Film tidak ditemukan.',
+        ]);
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+        Kritik::create([
+            'comment' => $validated['comment'],
+            'rating'  => 0,
+            'film_id' => $validated['film_id'],
+            'user_id' => Auth::id(),
+        ]);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreKritikRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Kritik $kritik)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Kritik $kritik)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateKritikRequest $request, Kritik $kritik)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Kritik $kritik)
-    {
-        //
+        return back()->with('success', 'Komentar berhasil ditambahkan!');
     }
 }

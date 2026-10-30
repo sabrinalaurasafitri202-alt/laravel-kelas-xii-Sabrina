@@ -13,8 +13,8 @@
       <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
         <nav>
           <ul class="nav navbar-nav">
-            <li class="w3_home_act {{ Route::current()->getName() == 'home' ? 'active' : '' }}"><a href="{{ route('home') }}">Home</a></li>
-            <li class="dropdown {{ Route::current()->getName() == 'genre' ? 'active' : '' }}">
+            <li class="w3_home_act {{ request()->routeIs('home') ? 'active' : '' }}"><a href="{{ route('home') }}">Home</a></li>
+            <li class="dropdown {{ request()->routeIs('genre') ? 'active' : '' }}">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Genres <b class="caret"></b></a>
               <ul class="dropdown-menu multi-column columns-3">
                 <li>
@@ -35,7 +35,7 @@
                 </li>
               </ul>
             </li>
-            <li class="w3_home_act {{ Route::current()->getName() == 'movies' ? 'active' : '' }}"><a href="{{ route('movies') }}">Movies</a></li>
+            <li class="w3_home_act {{ request()->routeIs('movies*') ? 'active' : '' }}"><a href="{{ route('movies') }}">Movies</a></li>
 
           </ul>
         </nav>

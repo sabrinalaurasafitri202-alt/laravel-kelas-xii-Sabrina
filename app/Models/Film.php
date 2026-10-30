@@ -11,5 +11,23 @@ class Film extends Model
     protected $table = 'films';
     protected $fillable = ['title','sinopsis','year','poster','genre_id'];
 
-    
+    public function kritiks()
+    {
+        return $this->hasMany(Kritik::class, 'film_id');
+    }
+
+    public function genre()
+    {
+        return $this->belongsTo(Genre::class, 'genre_id');
+    }
+
+    public function perans()
+    {
+        return $this->hasMany(Peran::class, 'film_id');
+    }
+
+    public function castMembers()
+    {
+        return $this->belongsToMany(Cast::class, 'perans', 'film_id', 'cast_id')->withPivot('actor');
+    }
 }
